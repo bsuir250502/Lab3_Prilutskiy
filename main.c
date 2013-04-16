@@ -56,8 +56,24 @@ int exp_check(char* source, stack * HEAD)
     else return 0;
 }
 
-int main()
+void show_help()
 {
+    puts("Help Info:\n");
+    puts("1. Enter expressions quantity\n2. Enter your expressions\n3.Wait for program output: your expressions will be checked, wether the brackets placed properly\n4. The End.");
+}
+
+int main(int argc, char * argv[])
+{
+    if (argc>1)
+    if (strcmp(argv[1],"-h")==0)
+    {
+         show_help();
+         return 0;
+    }
+    else
+    {
+        puts("Error. Improper parameter");
+    }
     stack * head = NULL;
     puts("Enter number of expressions");
     char buf[10];
@@ -84,4 +100,5 @@ int main()
         if(exp_check(exp[i], head)) puts("OK\n");
         else puts("NOT OK\n");
     }
+    return 0;
 }
