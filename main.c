@@ -41,6 +41,7 @@ int exp_check(char* source, stack * HEAD)
     int length = strlen(source);
     for (int i=0; i<length; i++)
     {
+        if (source[i]=='.' || source[i]==':' || source[i]==';') break;
         if ((source[i]==')' || source[i]==']' || source[i]=='}') && HEAD==NULL)
             return 0;
         if (source[i]=='(' || source[i]=='[' || source[i]=='{')
@@ -79,9 +80,18 @@ int main(int argc, char * argv[])
     char buf[10];
     fgets(buf,10,stdin);
     int exp_num = atoi(buf);
-    puts("Enter expression length");
-    fgets(buf,10,stdin);
-    int exp_length = atoi(buf);
+    while (1)
+    {
+        puts("Enter expression length");
+        fgets(buf,10,stdin);
+        int exp_length = atoi(buf);
+	if (exp_length>200) 
+	{
+	     puts("Error. Value should be <=200");
+	     continue;
+	}
+	else break;
+    }
 
     char ** exp = (char**)calloc(exp_num, sizeof(char*));
     for (int i=0; i<exp_num; i++)
