@@ -35,6 +35,17 @@ void show (stack * HEAD)
     }
     puts("");
 }
+void free_stack(stack * source)
+{
+    stack * tmp1 = source;
+    while (tmp1)
+    {
+        stack * tmp2 = tmp1->next;
+        free(tmp1);
+        tmp1 = tmp2;
+    }
+    
+}
 
 int exp_check(char* source, stack * HEAD)
 {
@@ -66,41 +77,32 @@ void show_help()
 int main(int argc, char * argv[])
 {
     if (argc>1)
-    if (strcmp(argv[1],"-h")==0)
     {
-         show_help();
-         return 0;
-    }
-    else
-    {
-        puts("Error. Improper parameter");
+        if (strcmp(argv[1],"-h")==0)
+        {
+             show_help();
+             return 0;
+        }
+        else
+        {
+            puts("Error. Improper parameter");
+            return 0;
+        }
     }
     stack * head = NULL;
     puts("Enter number of expressions");
     char buf[10];
     fgets(buf,10,stdin);
     int exp_num = atoi(buf);
-    while (1)
-    {
-        puts("Enter expression length");
-        fgets(buf,10,stdin);
-        int exp_length = atoi(buf);
-	if (exp_length>200) 
-	{
-	     puts("Error. Value should be <=200");
-	     continue;
-	}
-	else break;
-    }
 
     char ** exp = (char**)calloc(exp_num, sizeof(char*));
     for (int i=0; i<exp_num; i++)
-        exp[i] = (char*)calloc(exp_length,sizeof(char));
+        exp[i] = (char*)calloc(200,sizeof(char));
 
     for (int i=0; i<exp_num; i++)
     {
         printf("Type %d Expression\n",i+1);
-        fgets(exp[i],exp_length,stdin);
+        fgets(exp[i],200,stdin);
     }
     puts("Expressions loaded");
 
@@ -110,5 +112,10 @@ int main(int argc, char * argv[])
         if(exp_check(exp[i], head)) puts("OK\n");
         else puts("NOT OK\n");
     }
+
+    for (int i=0; i<exp_num; i++)
+        free(exp[i]);
+    free(exp);
+    free(head);
     return 0;
 }
